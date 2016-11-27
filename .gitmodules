@@ -1,0 +1,8 @@
+[submodule "gubg.build"]
+	path = gubg.build
+	url = https://github.com/gfannes/gubg.build
+	branch = master
+[submodule "gubg.arduino"]
+	path = gubg.arduino
+	url = https://github.com/gfannes/gubg.arduino
+	branch = master
