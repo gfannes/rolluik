@@ -1,15 +1,45 @@
 #include <Arduino.h>
 
-const int led_up    = 3;
-const int led_down  = 4;
+struct KnipperLed
+{
+  int pin;
+  int action_time = 0;
+  bool led_aan = true;
+  int wait_time = 80;
+
+  KnipperLed(int p)
+  {
+    pin = p;
+  }
+
+  void setup()
+  {
+    pinMode(pin, OUTPUT);    
+  }
+
+  void knipper(int now)
+  {
+    if (now >= action_time)
+    {
+       digitalWrite(pin, led_aan);
+       action_time = now + wait_time;
+      led_aan = !led_aan;
+    }
+  }
+
+};
+
+KnipperLed up(3);
+KnipperLed down(4);
 
 const int knop_up   = 8;
 const int knop_down = 9;
 
 void setup()
 {
-  pinMode(led_up,    OUTPUT);
-  pinMode(led_down,  OUTPUT);
+  down.wait_time++;
+  up.setup();
+  down.setup();
 
   pinMode(knop_up,   INPUT);
   pinMode(knop_down, INPUT);
@@ -21,9 +51,8 @@ void setup()
 
 void loop()
 {
-    int waarde_up = digitalRead(knop_up);
-    digitalWrite(led_up, waarde_up);
+  const int now = millis();
 
-    int waarde_down = digitalRead(knop_down);
-    digitalWrite(led_down, waarde_down);
+  up.knipper(now);
+  down.knipper(now);
 }
